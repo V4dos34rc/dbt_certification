@@ -2,6 +2,7 @@ version: 2
 
 sources:
   - name: jaffle_shop
+    description: A clone of a Postgres application database.
     database: raw
     schema: jaffle_shop
     freshness:
@@ -14,15 +15,19 @@ sources:
     loaded_at_field: _etl_loaded_at
     tables:
       - name: customers
+        description: Raw customers data.
         columns:
           - name: id
+            description: Primary key for customers.
             data_tests:
               - unique
               - not_null
         freshness: null
       - name: orders
+        description: Raw orders data.
         columns:
           - name: id
+            description: Primary key for orders.
             data_tests:
               - unique
               - not_null
