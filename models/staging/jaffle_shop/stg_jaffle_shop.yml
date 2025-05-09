@@ -24,6 +24,10 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: order_date
+        description: Order date.
+        data_tests:
+          - not_null
       - name : status
         description: '{{ doc("order_status") }}'
         data_tests:
@@ -35,7 +39,8 @@ models:
                 - "shipped"
                 - "placed"
       - name: customer_id
+        description: Foreign key for customers table.
         data_tests:
           - relationships:
-              to: ref('customers')
+              to: ref('stg_customers')
               field: customer_id

@@ -6,12 +6,8 @@ sources:
     database: raw
     schema: jaffle_shop
     freshness:
-      warn_after:
-        count: 24
-        period: hour
-      error_after:
-        count: 3
-        period: day
+            warn_after: { count: 24, period: hour }
+            error_after: { count: 3, period: day }
     loaded_at_field: _etl_loaded_at
     tables:
       - name: customers
@@ -22,6 +18,10 @@ sources:
             data_tests:
               - unique
               - not_null
+          - name: first_name
+            description: Customer's first name.
+          - name: last_name
+            description: Customer's last name.
         freshness: null
       - name: orders
         description: Raw orders data.
@@ -31,3 +31,11 @@ sources:
             data_tests:
               - unique
               - not_null
+          - name: user_id
+            description: Foreign Key for table customers.
+          - name: order_date
+            description: Order date.
+          - name: status
+            description: '{{ doc("order_status") }}'
+          - name: _etl_loaded_at
+            description: Uploaded date.

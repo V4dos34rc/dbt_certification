@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_payments
+    description: Storage data for Jaffle shop payments, one row per order and payment method.
+    columns:
+      - name: payment_id
+        description: Primary key for payments.
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: Foreign key for orders table.
+        data_tests:
+          - not_null
+      - name: payment_method
+        description: '{{ doc("pay_methods") }}'
+        data_tests:
+          - accepted_values:
+              values:
+                - "credit_card"
+                - "coupon"
+                - "bank_transfer"
+                - "gift_card"
+      - name: status
+        description: '{{ doc("pay_status") }}'
+        data_tests:
+          - accepted_values:
+              values:
+                - "success"
+                - "fail"
+      - name: amount
+        description: Payment amount.
+      - name: created_at
+        description: Created date.

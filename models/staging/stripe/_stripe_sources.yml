@@ -2,11 +2,48 @@ version: 2
 
 sources:
   - name: stripe
+    description: Storage historical information for jaffle shop payments.
     database: raw
     schema: stripe
     tables:
       - name: payment
+        description: Table with payments data, one row per order and payment method. 
         freshness:
                 warn_after: { count: 24, period: hour }
                 error_after: { count: 3, period: day }
         loaded_at_field: _batched_at
+        columns:
+          - name: id
+            description: Primary key for payments.
+            data_tests:
+              - unique
+              - not_null
+          - name: orderid
+            description: Foreign key for table orders.
+            data_tests:
+              - not_null
+              - relationships:
+                  to: ref('stg_orders')
+                  field: order_id
+          - name: paymentmethod
+            description: '{{ doc("pay_methods") }}'
+            data_tests:
+              - accepted_values:
+                  values:
+                    - "credit_card"
+                    - "coupon"
+                    - "bank_transfer"
+                    - "gift_card"
+          - name: status
+            description: '{{ doc("pay_status") }}'
+            data_tests:
+              - accepted_values:
+                  values:
+                    - "success"
+                    - "fail"
+          - name: amount
+            description: Payment amount.
+          - name: created
+            description: Creation data.
+          - name: _batched_at
+            description: Uploaded date for the batch.
