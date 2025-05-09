@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: One unique customer per row.
+    columns: 
+      - name: customer_id
+        description: Primary key.
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              field: id
+              to: "{{ source('raw', 'customers') }}"
+  - name: stg_orders
+    description: One order per row.
+    columns:
+      - name: order_id
+        description: Primary key.
+        data_tests:
+          - unique
+          - not_null
+      - name : status
+        description: "{{ doc('order_status') }}"
+        data_tests:
+          - accepted_values:
+              values:
+                - "returned"
+                - "completed"
+                - "return_pending"
+                - "shipped"
+                - "placed"
+      - name: customer_id
+        data_tests:
+          - relationships:
+              to: ref('customers')
+              field: customer_id
