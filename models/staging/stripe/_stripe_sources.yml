@@ -10,7 +10,7 @@ sources:
         description: Table with payments data, one row per order and payment method. 
         freshness:
                 warn_after: { count: 24, period: hour }
-                error_after: { count: 3, period: day }
+                error_after: { count: 5, period: day }
         loaded_at_field: _batched_at
         columns:
           - name: id
